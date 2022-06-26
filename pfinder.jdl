@@ -1,0 +1,54 @@
+entity UserProfile {
+	email String
+    firstName String
+    lastName String
+    phone String
+    avatar String
+    address String
+    location Blob
+}
+
+entity Pet {
+	name String
+    dateOfBirth String
+    breed String
+    gender String
+}
+
+entity Like {
+    time String
+}
+entity Dislike {
+    time String
+}
+entity Match {
+    time String
+}
+
+entity Avatar {
+    name String
+    path String
+}
+
+relationship OneToOne {
+	UserProfile{activePet} to Pet 
+    Like{actor} to Pet 
+    Like{like} to Pet
+    Dislike{actor} to Pet 
+    Dislike{dislike} to Pet 
+    Match{actor} to Pet 
+    Match{match} to Pet 
+    UserProfile {activeAvatar} to Avatar
+}
+
+relationship ManyToOne {
+	Pet{owner} to UserProfile
+    Avatar{pet} to Pet
+}
+
+
+
+
+
+
+
