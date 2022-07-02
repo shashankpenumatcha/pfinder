@@ -71,24 +71,24 @@
 
 
     const createPet = async () => {
-        return axios.post('http://192.168.0.102:8080/api/v1/pet',{
+        return axios.post('http://192.168.0.104:8080/api/v1/pet',{
           name,breed,gender,dateOfBirth:dob
         })
     }  
 
     const updatePet = async () => {
-      return axios.put('http://192.168.0.102:8080/api/v1/pet',{
+      return axios.put('http://192.168.0.104:8080/api/v1/pet',{
         name,breed,gender,dateOfBirth:dob,id:selectedPet?.id
       })
   }  
     const setActivePetAPI = async (id:number) => {
-      return axios.put('http://192.168.0.102:8080/api/v1/profile/pet',{id})
+      return axios.put('http://192.168.0.104:8080/api/v1/profile/pet',{id})
   }
 
 
     const deleteAvatar = async (index:number) => {
       if(avatars?.length && avatars[index]){
-        axios.delete('http://192.168.0.102:8080/api/v1/pet/avatar?id='+avatars[index].id).then(()=>{
+        axios.delete('http://192.168.0.104:8080/api/v1/pet/avatar?id='+avatars[index].id).then(()=>{
           dispatch(getSelectedPetAvatars({id:selectedPet.id}))
         })
       }
@@ -112,7 +112,7 @@
           createPet().then((res:any)=>{
             dispatch(setSelectedPet(res.data));
             dispatch(getProfile());
-            axios.get('http://192.168.0.102:8080/api/v1/pet/avatars?id='+res.data.id).then(
+            axios.get('http://192.168.0.104:8080/api/v1/pet/avatars?id='+res.data.id).then(
               r=>{
                 dispatch(setSelectedPetAvatars(r.data))
                 savePetAvatar(name,r.data,index,res.data.id,pickerResult.base64)
@@ -120,7 +120,7 @@
             )
           });
         }else{
-          axios.get('http://192.168.0.102:8080/api/v1/pet/avatars?id='+selectedPet.id).then(
+          axios.get('http://192.168.0.104:8080/api/v1/pet/avatars?id='+selectedPet.id).then(
             r=>{
               dispatch(setSelectedPetAvatars(r.data))
               savePetAvatar(name,r.data,index,selectedPet?.id,pickerResult.base64)
@@ -135,7 +135,7 @@
 
   const savePetAvatar = (name:any,avatars:any[],index:number,petId:number,base64:string)=>{
     const fd:any = {fileContentBase64:base64,fileName:name}
-        axios.post('http://192.168.0.102:8080/api/v1/pet/avatar?id='+petId,fd).then(res=>{
+        axios.post('http://192.168.0.104:8080/api/v1/pet/avatar?id='+petId,fd).then(res=>{
           dispatch(getSelectedPetAvatars({id:petId}))
         })
     }
@@ -150,7 +150,7 @@
                   <View key={i} style={styles.imageContainer}>
                     {
                       avatars[i] ?
-                      <Avatar style={styles.imageContainer} shape='square' source={{ uri: `http://192.168.0.102:8080/images/${avatars[i]?.path}` }} />:
+                      <Avatar style={styles.imageContainer} shape='square' source={{ uri: `http://192.168.0.104:8080/images/${avatars[i]?.path}` }} />:
                       <Ionicons name='image' size={60} color='#fff' />
 
                     }

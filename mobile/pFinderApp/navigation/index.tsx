@@ -122,7 +122,7 @@ function BottomTabNavigator(props:any) {
         {
           !activePetAvatar?.path ? 
           <Avatar size='medium' source={require('../assets/images/avatar.png')} /> :
-          <Avatar size='medium' source={{uri:`http://192.168.0.103:8080/images/${activePetAvatar?.path}`}} /> 
+          <Avatar size='medium' source={{uri:`http://192.168.0.104:8080/images/${activePetAvatar?.path}`}} /> 
         }
       </Pressable>
       } 
@@ -141,7 +141,7 @@ function BottomTabNavigator(props:any) {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Tab One',
-          headerShown:true,
+          headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable

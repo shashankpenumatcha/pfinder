@@ -8,6 +8,7 @@ import axios from 'axios';
 import { getCoords } from '../shared/reducers/profile';
 import MapView, {Marker} from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
+import { Divider, Menu, MenuGroup, MenuItem } from '@ui-kitten/components';
 
 export default function SettingsScreen(props:any) {
   const [errorMsg, setErrorMsg] = useState('');
@@ -50,7 +51,7 @@ export default function SettingsScreen(props:any) {
       if(!location){
         return
       }
-      axios.put('http://192.168.0.102:8080/api/v1/profile/location',{lat:location.coords.latitude, lng:location.coords.longitude}).then(()=>{
+      axios.put('http://192.168.0.104:8080/api/v1/profile/location',{lat:location.coords.latitude, lng:location.coords.longitude}).then(()=>{
         dispatch(getCoords());
       })
     })();
@@ -63,32 +64,54 @@ export default function SettingsScreen(props:any) {
 
   return (
     <View style={styles.container}>
-      {
-        coords ? 
-        <MapView
-            region={{
-              latitude: coords[0],
-              longitude: coords[1],
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            style={styles.map}>
-        <Marker coordinate={{latitude:coords[0],longitude:coords[1]} as any}/>
-        </MapView>:
-        <MapView style={styles.map}/>
-      }
-     
-      <View style={styles.locate} >
-        <Pressable onPress={()=>retreiveLocation()}>
-          <Ionicons name='locate' size={30} color='#fff' />
-        </Pressable>
+      <Text style={styles.h}>Update Location</Text>
+      <View>
+        {
+          coords ? 
+          <MapView
+              region={{
+                latitude: coords[0],
+                longitude: coords[1],
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              style={styles.map}>
+          <Marker coordinate={{latitude:coords[0],longitude:coords[1]} as any}/>
+          </MapView>:
+          <MapView style={styles.map}/>
+        }
+        <View style={styles.locate} >
+          <Pressable onPress={()=>retreiveLocation()}>
+            <Ionicons name='locate' size={30} color='#fff' />
+          </Pressable>
+        </View>
       </View>
+      <Text style={styles.footer}>Please provide location to start matching</Text>
 
-    </View>
+      <Divider style={styles.divider}></Divider>
+
+      <Text style={styles.h}>Update Distance</Text>
+
+  </View>
   );
 }
 
 const styles = StyleSheet.create({
+  divider:{
+    width: Dimensions.get('window').width,
+    marginVertical:15
+  },
+  footer:{
+  alignSelf:'flex-start',
+  paddingLeft:15,
+  paddingVertical:5
+  },
+  h:{
+    alignSelf:'flex-start',
+    padding:13,
+    fontWeight:'bold',
+    fontSize:18
+  },
   container: {
     flex: 1,
     alignItems: 'center',

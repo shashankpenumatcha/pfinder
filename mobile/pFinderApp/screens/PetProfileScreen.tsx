@@ -44,7 +44,7 @@ export default function PetProfileScreen(props: any) {
                   {
                     pets?.map((p: any) => {
                       return <Pressable onPress={() => {
-                        axios.put('http://192.168.0.102:8080/api/v1/profile/pet', p).then(r => {
+                        axios.put('http://192.168.0.104:8080/api/v1/profile/pet', p).then(r => {
                           dispatch(getProfile())
                         })
                       }}>
@@ -52,7 +52,7 @@ export default function PetProfileScreen(props: any) {
                           {
                             !petAvatars[p.id]?.path ?
                               <Avatar style={styles.profileImageContainer} source={require('../assets/images/avatar.png')} /> :
-                              <Avatar style={styles.profileImageContainer} source={{ uri: `http://192.168.0.102:8080/images/${petAvatars[p.id]?.path}` }} />
+                              <Avatar style={styles.profileImageContainer} source={{ uri: `http://192.168.0.104:8080/images/${petAvatars[p.id]?.path}` }} />
                           }
                           <View>
                             <Text style={styles.petNameSmall}>{p.name}</Text>
@@ -84,7 +84,7 @@ export default function PetProfileScreen(props: any) {
               {
                 !profile?.avatar ?
                   <Avatar style={styles.profileImageContainer} source={require('../assets/images/avatar.png')} /> :
-                  <Avatar style={styles.profileImageContainer} source={{ uri: `http://192.168.0.102:8080/images/${profile?.avatar?.path}` }} />
+                  <Avatar style={styles.profileImageContainer} source={{ uri: `http://192.168.0.104:8080/images/${profile?.avatar?.path}` }} />
               }
               <Pressable onPress={chooseFile} style={styles.editIconContainer}>
                 <Ionicons name='edit' size={13} color='#004EDB' />
@@ -112,7 +112,7 @@ export default function PetProfileScreen(props: any) {
           {
             !activePetAvatar?.path ?
               <Avatar style={styles.petImageContainer} source={require('../assets/images/avatar.png')} /> :
-              <Avatar style={styles.petImageContainer} source={{ uri: `http://192.168.0.102:8080/images/${activePetAvatar?.path}` }} />
+              <Avatar style={styles.petImageContainer} source={{ uri: `http://192.168.0.104:8080/images/${activePetAvatar?.path}` }} />
           }
           <View>
             <Text style={styles.petName}>{profile?.activePet?.name}</Text>
@@ -137,19 +137,19 @@ export default function PetProfileScreen(props: any) {
                 setModalVisible(true);
               }}
                 style={styles.action}>
-                <Ionicons name='swap' size={40} color='#004EDB' />
+                <Ionicons name='swap' size={30} color='#004EDB' />
               </Pressable>
               <Text style={[styles.centerText]}>Switch</Text>
             </View>
             <View>
               <Pressable onPress={() => {
-                axios.get('http://192.168.0.102:8080/api/v1/pet/avatars?id=' + profile?.activePet.id).then(r => {
+                axios.get('http://192.168.0.104:8080/api/v1/pet/avatars?id=' + profile?.activePet.id).then(r => {
                   dispatch(setSelectedPetAvatars(r.data))
                   dispatch(setSelectedPet(profile?.activePet))
                   props.navigation.navigate('Edit Pet')
                 })
               }} style={styles.actionCenter}>
-                <Ionicons name='edit' size={40} color='#004EDB' />
+                <Ionicons name='edit' size={30} color='#004EDB' />
               </Pressable>
               <Text style={[styles.centerText]}>Edit Pet</Text>
             </View>
@@ -157,7 +157,7 @@ export default function PetProfileScreen(props: any) {
               <Pressable onPress={()=>{
                 props.navigation.navigate('Settings')
               }} style={styles.action}>
-                <Ionicons name='setting' size={40} color='#004EDB' />
+                <Ionicons name='setting' size={30} color='#004EDB' />
               </Pressable>
               <Text style={[styles.centerText]}>Settings</Text>
 

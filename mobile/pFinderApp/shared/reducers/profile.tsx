@@ -18,10 +18,10 @@ export const initialState = {
 
 export type ProfileState = Readonly<typeof initialState>;
 
-export const getProfile = createAsyncThunk('authentication/get_profile', async () => axios.get<any>('http://192.168.0.102:8080/api/v1/profile'));
-export const saveProfile = createAsyncThunk('authentication/save_profile', async (profile:any) => axios.put<any>('http://192.168.0.102:8080/api/v1/profile',profile));
-export const saveAvatar = createAsyncThunk('authentication/save_avatar', async (profile:any) => axios.post<any>('http://192.168.0.102:8080/api/v1/profile/avatar',profile));
-export const getCoords = createAsyncThunk('authentication/get_coords', async () => axios.get<any>('http://192.168.0.102:8080/api/v1/profile/location'));
+export const getProfile = createAsyncThunk('authentication/get_profile', async () => axios.get<any>('http://192.168.0.104:8080/api/v1/profile'));
+export const saveProfile = createAsyncThunk('authentication/save_profile', async (profile:any) => axios.put<any>('http://192.168.0.104:8080/api/v1/profile',profile));
+export const saveAvatar = createAsyncThunk('authentication/save_avatar', async (profile:any) => axios.post<any>('http://192.168.0.104:8080/api/v1/profile/avatar',profile));
+export const getCoords = createAsyncThunk('authentication/get_coords', async () => axios.get<any>('http://192.168.0.104:8080/api/v1/profile/location'));
 
 
 export const ProfileSlice = createSlice({

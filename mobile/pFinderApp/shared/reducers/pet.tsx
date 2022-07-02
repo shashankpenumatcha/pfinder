@@ -13,8 +13,8 @@ export const initialState = {
 
 export type PetState = Readonly<typeof initialState>;
 
-export const getSelectedPetAvatars = createAsyncThunk('authentication/get_selected_pet_avatars', async (payload:any) => axios.get<any>('http://192.168.0.102:8080/api/v1/pet/avatars?id='+payload.id));
-export const getPetsAndAvatars = createAsyncThunk('authentication/get_pets_and_avatars', async () => axios.get<any>('http://192.168.0.102:8080/api/v1/profile/pets'));
+export const getSelectedPetAvatars = createAsyncThunk('authentication/get_selected_pet_avatars', async (payload:any) => axios.get<any>('http://192.168.0.104:8080/api/v1/pet/avatars?id='+payload.id));
+export const getPetsAndAvatars = createAsyncThunk('authentication/get_pets_and_avatars', async () => axios.get<any>('http://192.168.0.104:8080/api/v1/profile/pets'));
 
 export const PetsSlice = createSlice({
   name: 'pet',
