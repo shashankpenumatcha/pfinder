@@ -19,6 +19,9 @@ export type RootStackParamList = {
   NotFound: undefined;
   Login: undefined;
   Profile:undefined;
+  'Pet Profile':undefined;
+  'Edit Pet': undefined;
+  'Settings': undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

@@ -1,6 +1,7 @@
 import { AnyAction, configureStore, ThunkAction, Action, Store, Reducer, ReducersMapObject, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import authentication from './shared/reducers/authentication';
+import pet from './shared/reducers/pet';
 import profile from './shared/reducers/profile';
 
 
@@ -10,8 +11,14 @@ const store = configureStore({
   reducer: {
     authentication: authentication,
     profile: profile,
-
-  }
+    pet:pet,
+  }, middleware: getDefaultMiddleware =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      // Ignore these field paths in all actions
+      ignoredActionPaths: ['payload.config', 'payload.request', 'error', 'meta.arg'],
+    }
+  })
 });
 
 // Allow lazy loading of reducers https://github.com/reduxjs/redux/blob/master/docs/usage/CodeSplitting.md
@@ -30,7 +37,7 @@ export function configureInjectableStore(storeToInject: any) {
       combineReducers({
         authentication: authentication,
         profile: profile,
-
+        pet:pet,
         ...injectableStore.asyncReducers,
       })
     );

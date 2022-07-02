@@ -20,13 +20,13 @@ export type AuthenticationState = Readonly<typeof initialState>;
 // Actions
 ;
 
-export const getAccount = createAsyncThunk('authentication/get_account', async () => axios.get<any>('http://192.168.0.100:8080/api/account'));
+export const getAccount = createAsyncThunk('authentication/get_account', async () => axios.get<any>('http://192.168.0.102:8080/api/account'));
 
-export const logoutServer = createAsyncThunk('authentication/logout', async () => axios.post<any>('http://192.168.0.100:8080/api/logout', {}));
+export const logoutServer = createAsyncThunk('authentication/logout', async () => axios.post<any>('http://192.168.0.102:8080/api/logout', {}));
 
-export const login = createAsyncThunk('authentication/login', async ({username,password}:any) => axios.post<any>('http://192.168.0.100:8080/api/authenticate',{username,password,rememberMe:true}));
+export const login = createAsyncThunk('authentication/login', async ({username,password}:any) => axios.post<any>('http://192.168.0.102:8080/api/authenticate',{username,password,rememberMe:true}));
 
-export const tokenRefresh = createAsyncThunk('authentication/refresh', async (data) => axios.post<any>('http://192.168.0.100:8080/api/refreshToken',data));
+export const tokenRefresh = createAsyncThunk('authentication/refresh', async (data) => axios.post<any>('http://192.168.0.102:8080/api/refreshToken',data));
 
 export const logout: () => AppThunk = () => async dispatch => {
   await dispatch(logoutServer());
