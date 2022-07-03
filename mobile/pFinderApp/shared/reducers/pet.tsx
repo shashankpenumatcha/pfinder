@@ -8,7 +8,8 @@ export const initialState = {
   addedPet:null,
   loading:false,
   avatars:[],
-  activePetAvatar: null
+  activePetAvatar: null,
+  cards:[]
 };
 
 export type PetState = Readonly<typeof initialState>;
@@ -28,6 +29,9 @@ export const PetsSlice = createSlice({
     },setActivePetAvatar(state,action){
       state.activePetAvatar = action.payload
 
+    },
+    setCards(state, action){
+      state.cards = action.payload;
     }
   },
   extraReducers(builder:any) {
@@ -59,5 +63,5 @@ export const PetsSlice = createSlice({
   },
 });
 
-export const {setSelectedPet,setSelectedPetAvatars, setActivePetAvatar } = PetsSlice.actions;
+export const {setSelectedPet,setSelectedPetAvatars, setActivePetAvatar, setCards } = PetsSlice.actions;
 export default PetsSlice.reducer;

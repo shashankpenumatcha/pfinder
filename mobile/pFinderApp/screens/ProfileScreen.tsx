@@ -91,6 +91,7 @@ export default function ProfileScreen(props:any) {
                 <Avatar style={styles.profileImageContainer} size='giant' source={require('../assets/images/avatar.png')} /> :
                 <Avatar style={styles.profileImageContainer} size='giant' source={{uri:`http://192.168.0.104:8080/images/${profile?.avatar?.path}`}} /> 
               }
+             
               <Pressable onPress={chooseFile} style={styles.editIconContainer}>
                 <Ionicons name='plus' size={17} color='#dfdbdb' />
               </Pressable>
