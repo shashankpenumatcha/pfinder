@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   }, profileImageContainer: {
     margin: 20,
     padding: 10,
-    elevation: 5,
+    // elevation: 5,
     width: 100,
     height: 100,
     backgroundColor: '#dfdbdb',

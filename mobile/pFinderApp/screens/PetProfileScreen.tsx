@@ -43,7 +43,7 @@ export default function PetProfileScreen(props: any) {
                 <ScrollView>
                   {
                     pets?.map((p: any) => {
-                      return <Pressable onPress={() => {
+                      return <Pressable key={p.id} onPress={() => {
                         axios.put('http://192.168.0.104:8080/api/v1/profile/pet', p).then(r => {
                           dispatch(getProfile())
                         })
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   }, petImageContainer: {
     margin: 20,
     padding: 10,
-    elevation: 5,
+   // elevation: 5,
     width: 200,
     height: 200,
     backgroundColor: '#dfdbdb',

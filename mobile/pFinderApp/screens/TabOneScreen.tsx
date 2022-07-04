@@ -1,35 +1,105 @@
-import {  Dimensions, StyleSheet } from 'react-native';
+import {  Dimensions, Pressable, StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import Swiper  from 'react-native-deck-swiper';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { Avatar } from '@ui-kitten/components';
+import { Ionicons } from '@expo/vector-icons';
+import { useAppDispatch, useAppSelector } from '../store';
+import { getProfile } from '../shared/reducers/profile';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [cards, setCards] = useState([] as any);
   const [show, setShow] = useState(false);
-
-
+  const [swiper, setSwiper]= useState() as any;
+  const activePet:any = useAppSelector(state=>state.profile.activePet);
+  const dispatch =useAppDispatch();
+  useEffect(()=>{
+    dispatch(getProfile())
+  },[])
   useEffect(()=>{
     if(!show){
       getCards();
     }
   },[show])
 
+  const like = (i:number,c:any)=>{
+    if(!cards[i]?.id){
+      alert('No active pet')
+      return
+    }
+    axios.post('http://192.168.0.104:8080/api/v1/actions/like?id='+cards[i].id).then(res=>{
+      if(res?.data?.actor?.id != activePet?.id){
+        alert('its a match with ' + res?.data?.actor?.name )
+      }
+    })
+  }
+
+  const dislike = (i:number,c:any)=>{
+    if(!activePet || !cards[i]?.id){
+      alert('No active pet')
+      return
+    }
+    axios.post('http://192.168.0.104:8080/api/v1/actions/dislike?id='+cards[i].id).then(res=>{
+    
+    })
+  }
+  
 
   const getCards = () => {
-    axios.get('http://192.168.0.104:8080/api/v1/pets/search?distance=10').then(res=>{
+    axios.get('http://192.168.0.104:8080/api/v1/pets/search?distance=100').then(res=>{
       setCards(res.data)
       setShow(true)
     })
   }
   return (
     <View style={styles.container}>
+     
+        <View>
         {
-          show ? 
+          (show&&cards?.length) ? 
           (<Swiper
+            overlayLabels={{left: {
+              title: 'NOPE',
+                style: {
+                  label: {
+                    backgroundColor: 'black',
+                    borderColor: 'black',
+                    color: 'white',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: -30
+                  }
+                }
+              },
+              right: {
+              title: 'LIKE',
+                style: {
+                  label: {
+                    backgroundColor: 'black',
+                    borderColor: 'black',
+                    color: 'white',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: 30
+                  }
+                }
+              }}}
+            ref={swiper => {
+              setSwiper(swiper)
+            }}
               disableTopSwipe={true}
               cards={cards}
               renderCard={(card:any) => {
@@ -41,16 +111,17 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
                                 <Avatar  shape='square' style={styles.profileImageContainer} size='giant' source={{uri:`http://192.168.0.104:8080/images/${card?.avatars[0].path}`}} /> 
                               }
                           <View>
-                           <Text  style={styles.cTitle}> {card.name}</Text>
+                           { card?.name && <Text  style={styles.cTitle}> {card?.name}</Text>}
                           </View>
                           <View >
-                            <Text style={styles.cBreed}>{card.breed}</Text>
+                          {card?.breed && <Text style={styles.cBreed}>{card?.breed}</Text>}
                           </View>
                       </View>
                   )
               }}
 
-              onSwiped={(cardIndex) => {console.log(cardIndex)}}
+              onSwipedLeft={(i:number)=>dislike(i,cards)}
+              onSwipedRight={(i:number)=>like(i,cards)}
               onSwipedAll={() => {setShow(false)}}
               cardIndex={0}
               backgroundColor={'#fff'}
@@ -64,6 +135,36 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           </Swiper>) :
           null
         }
+        </View>
+       { (show&&cards?.length) ? <View style={styles.actions}>
+          <View style={styles.actionItem}>
+            <Pressable onPress={()=>{
+              if( swiper){
+                swiper.swipeLeft()
+              }
+            }}>
+                <Ionicons name='close' size={40} color='grey' />
+            </Pressable>
+          </View>
+          <View style={styles.actionItem}>
+            <Pressable onPress={()=>{
+              if( swiper){
+                swiper.swipeRight()
+              }
+            }}>
+                <Ionicons name='heart' size={40} color='grey' />
+            </Pressable>
+          </View>
+          </View> : 
+          <View style={styles.noCards}>
+            <Text>
+              No pets found please adjust filters and try again
+            </Text>
+          </View>
+          }
+          
+       
+   
     </View>
   );
 }
@@ -115,6 +216,29 @@ const styles = StyleSheet.create({
     padding:15,
     fontSize:16,
     paddingTop:0
-    
+  },actions:{
+    position:'absolute',
+    bottom:10,
+    height:70,
+    width: Dimensions.get('window').width ,
+    justifyContent:'space-evenly',
+    alignItems:'center',
+    flexDirection:'row',
+  },
+  actionItem:{
+    backgroundColor:'white',
+    borderRadius:300,
+    elevation:2,
+    height:70,
+    width:70,
+    justifyContent:'center',
+    alignItems:'center',
+  },noCards:{
+    width: Dimensions.get('window').width ,
+    height: Dimensions.get('window').height ,
+    justifyContent:'center',
+    alignItems:'center'
+
+
   }
 });
